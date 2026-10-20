@@ -23,6 +23,10 @@ final class MusicUserLoginService {
     {
         $musicUser = $this->finder->find($request->getEmail());
 
+        if ($musicUser->isGoogleAccount()) {
+            throw new \Exception('Esta cuenta se creó con Google. Ingresá con el botón de Google.', 400);
+        }
+
         if (!$musicUser->verifyPassword($request->getPassword())) {
             throw new MusicUserWrongPasswordException();
         }
@@ -31,7 +35,7 @@ final class MusicUserLoginService {
 
         $this->musicUserModel->update($musicUser);
 
-        return new MusicUserLoginResponse($musicUser->getToken(), $musicUser->getRole(), $musicUser->getId(), $musicUser->getLogo() ?? '');
+        return new MusicUserLoginResponse($musicUser->getToken(), $musicUser->getRole(), $musicUser->getId(), $musicUser->getLogo() ?? '', $musicUser->getAuthProvider());
     
     }
 }

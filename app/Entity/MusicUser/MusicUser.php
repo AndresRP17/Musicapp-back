@@ -14,7 +14,8 @@ final class MusicUser{
         private string $role,
         private ?string $token,
         private ?DateTime $tokenExpirationDate,
-        private ?string $logo
+        private ?string $logo,
+        private string $authProvider = 'local'
         ){}
 
     public function getId(): ?int
@@ -45,6 +46,21 @@ final class MusicUser{
     public function getTokenExpirationDate(): ?Datetime
     {
         return $this->tokenExpirationDate;
+    }
+
+    public function getAuthProvider(): string
+    {
+        return $this->authProvider;
+    }
+
+    public function isGoogleAccount(): bool
+    {
+        return $this->authProvider === 'google';
+    }
+
+    public function changePassword(string $newPassword): void
+    {
+        $this->password = password_hash($newPassword, PASSWORD_BCRYPT);
     }
 
     public function verifyPassword(string $password): bool

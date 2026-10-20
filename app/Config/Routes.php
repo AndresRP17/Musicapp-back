@@ -60,7 +60,12 @@ $routes->group('api', function ($routes) {
     $routes->post('music_users/logo', 'MusicUser\MusicUserPutController::uploadLogo');
     $routes->get('music_users/(:num)/projection', 'MusicUser\MusicUserProjectionController::find/$1');
     $routes->post('music_users/role', 'MusicUser\MusicUserPutController::updateRole');
+    $routes->post('music_users/google', 'MusicUser\MusicUserGoogleLoginController::login');
+    $routes->post('music_users/password', 'MusicUser\MusicUserChangePasswordController::change');
+    $routes->post('music_users/forgot-password', 'MusicUser\MusicUserForgotPasswordController::forgot');
+   $routes->post('music_users/reset-password', 'MusicUser\MusicUserResetPasswordController::reset');
 
+   
     //PLAYLIST
     $routes->post('playlists', 'Playlist\PlaylistPostController::create');
     $routes->get('playlists/(:num)', 'Playlist\PlaylistGetController::find/$1');

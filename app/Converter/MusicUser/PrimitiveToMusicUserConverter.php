@@ -16,7 +16,8 @@ final class PrimitiveToMusicUserConverter {
             $primitive->role,
             $primitive->token,
            new DateTime($primitive->token_expiration_date),
-           $primitive->logo
+           $primitive->logo,
+           $primitive->auth_provider ?? 'local'
         );
     }
 }

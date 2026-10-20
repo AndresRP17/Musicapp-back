@@ -9,7 +9,8 @@ final readonly class MusicUserLoginResponse implements JsonSerializable {
         public string $token,
         public string $role,
         public int $id,
-        public string $logo
+        public string $logo,
+        public string $provider = 'local'
     ){}
 
     public function jsonSerialize(): array
@@ -18,7 +19,8 @@ final readonly class MusicUserLoginResponse implements JsonSerializable {
             'token' => $this->token,
             'role' => $this->role,
             'id' => $this->id,
-            'logo' => $this->logo
+            'logo' => $this->logo,
+            'provider' => $this->provider
         ];
     }
 }

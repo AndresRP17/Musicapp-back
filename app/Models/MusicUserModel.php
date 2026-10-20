@@ -20,14 +20,15 @@ final class MusicUserModel {
 
     public function insert(MusicUser $musicUser): MusicUser
     {
-        $query = "INSERT INTO music_users (email, password, role, token, token_expiration_date) VALUES (?,?,?,?,?)";
+        $query = "INSERT INTO music_users (email, password, role, token, token_expiration_date, auth_provider) VALUES (?,?,?,?,?,?)";
 
         $this->database->query($query, [
             $musicUser->getEmail(),
             $musicUser->getPassword(),
             $musicUser->getRole(),
             $musicUser->getToken(),
-            $musicUser->getTokenExpirationDate()
+            $musicUser->getTokenExpirationDate(),
+            $musicUser->getAuthProvider()
         ]);
 
         $id = $this->database->insertID();
@@ -39,7 +40,8 @@ final class MusicUserModel {
             $musicUser->getRole(),
             $musicUser->getToken(),
             $musicUser->getTokenExpirationDate(),
-            $musicUser->getLogo()
+            $musicUser->getLogo(),
+            $musicUser->getAuthProvider()
         );
     }
 
@@ -66,7 +68,7 @@ final class MusicUserModel {
 
     public function find(int $id): ?MusicUser
     {
-        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo FROM music_users M WHERE M.id = ?";
+        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo, M.auth_provider FROM music_users M WHERE M.id = ?";
         $result = $this->database->query($query, [$id]);
         $primitive = $result->getRow();
 
@@ -79,7 +81,7 @@ final class MusicUserModel {
 
     public function search(): array
     {
-        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo FROM music_users M";
+        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo, M.auth_provider FROM music_users M";
         $result = $this->database->query($query);
 
         return $result->getResult();
@@ -93,7 +95,7 @@ final class MusicUserModel {
 
     public function findByEmail(string $email): ?MusicUser
     {
-        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo FROM music_users M WHERE M.email = ?";
+        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo, M.auth_provider FROM music_users M WHERE M.email = ?";
         $result = $this->database->query($query, [$email]);
         $primitive = $result->getRow();
 
@@ -109,7 +111,7 @@ final class MusicUserModel {
         $now = new Datetime();
         $dateNow = $now->format("Y-m-d H:i:s");
 
-        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo ";
+        $query = "SELECT M.id, M.email, M.password, M.role, M.token, M.token_expiration_date, M.logo, M.auth_provider ";
         $query.= "FROM music_users M ";
         $query.= "WHERE M.token = ? AND M.token_expiration_date >= ?";
         $result = $this->database->query($query, [$token, $dateNow]);
